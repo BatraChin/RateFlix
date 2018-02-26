@@ -346,5 +346,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
     }
+
+    public void Login(){
+        String user= mEmailView.getText();
+        String password= mPasswordView.getText();
+
+        if ()
+
+    }
+
+
+
 }
 
