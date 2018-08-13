@@ -1,7 +1,7 @@
 package batracorp.rateflix;
 
 /**
- * Created by Lupe on 6/2/2017.
+ * Created by Batrachin on 6/2/2017.
  */
 
 public class Movie {
@@ -17,7 +17,6 @@ public class Movie {
         this.description=description;
         comments= new Comment[10];
         quantityComments=0;
-        description=new String();
     }
 
     public void addComment(Comment c){
@@ -31,5 +30,12 @@ public class Movie {
             average+=comments[i].getPunctuation();
         average/=quantityComments;
         punctuation=average;
+    }
+
+    public String getTitle(){
+        return name;
+    }
+    public String getDescription(){
+        return description;
     }
 }

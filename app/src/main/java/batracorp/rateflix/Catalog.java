@@ -15,7 +15,41 @@ public class Catalog {
     }
 
     public void addMovie(Movie movie){
+        if (quantity > movies.length) {
+            duplicar();
+        }
+
         movies[quantity]=movie;
         quantity++;
+    }
+
+    public void removeMovie(Movie movie){
+        int i=0;
+        boolean encontro=false;
+        while (i<quantity && !encontro) {
+            if (movies[i].equals(movie)) {
+                encontro = true;
+                i--;
+            }
+            i++;
+        }
+        if (encontro)
+            comprimir(i);
+
+    }
+    private void duplicar(){
+        Movie[] aux =  new Movie[quantity * 2];
+        int i = 0;
+        for (Movie m : movies) {
+            aux[i] = m;
+            i++;
+        }
+        movies = aux;
+    }
+    private void comprimir(int pos){
+        int i;
+        for (i=pos;i<quantity-1;i++)
+            movies[i]=movies[i+1];
+        movies[i+1]=null;
     }
 }

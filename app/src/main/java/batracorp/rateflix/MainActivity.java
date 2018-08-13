@@ -9,5 +9,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AddMovieButton.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this, NewMovieActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
