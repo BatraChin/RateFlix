@@ -14,7 +14,9 @@ public class Catalog {
         quantity=0;
     }
 
-    public void addMovie(Movie movie){
+    public void addMovie(String Title, String Description, String Picture){
+
+        Movie movie =new Movie(Title,Description,Picture);
         if (quantity > movies.length) {
             duplicar();
         }

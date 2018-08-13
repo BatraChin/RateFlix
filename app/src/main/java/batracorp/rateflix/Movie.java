@@ -7,17 +7,33 @@ package batracorp.rateflix;
 public class Movie {
 
     private String name;
-    private float punctuation;
+    private String description;
+    private String picture;
+
+
     private Comment[]   comments ;
     private int quantityComments;
-    private String description;
+    private float punctuation;
 
-    public Movie(String name,String description){
+
+    public Movie(String name,String description,String picture){
         this.name=name;
         this.description=description;
+        this.picture=picture;
+
+
         comments= new Comment[10];
         quantityComments=0;
     }
+
+    public String getTitle(){
+        return name;
+    }
+    public String getDescription(){
+        return description;
+    }
+
+
 
     public void addComment(Comment c){
         comments[quantityComments]=c;
@@ -32,10 +48,4 @@ public class Movie {
         punctuation=average;
     }
 
-    public String getTitle(){
-        return name;
-    }
-    public String getDescription(){
-        return description;
-    }
 }
