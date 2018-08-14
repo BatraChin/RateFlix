@@ -21,7 +21,7 @@ public class NewMovieActivity extends AppCompatActivity {
 
                 SharedPreferences Catalogo = getApplicationContext().getSharedPreferences("Catalogo", MODE_PRIVATE   );
                 SharedPreferences.Editor editor = Catalogo.edit();
-                Catalog
+                //Catalog
 
                 Intent intent = new Intent(NewMovieActivity.this, MainActivity.class);
                 startActivity(intent);

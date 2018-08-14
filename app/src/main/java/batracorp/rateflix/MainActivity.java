@@ -13,8 +13,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPreferences Catalogo = getApplicationContext().getSharedPreferences("Catalogo", MODE_PRIVATE   );
-        SharedPreferences.Editor editor = settings.edit();
+       // SharedPreferences Catalogo = getApplicationContext().getSharedPreferences("Catalogo", MODE_PRIVATE   );
+       // SharedPreferences.Editor editor = settings.edit();
 
         // Button mAddMovieButton = (Button) findViewById(R.id.AddMovieButton);
         findViewById(R.id.AddMovieButton).setOnClickListener(new View.OnClickListener() {
