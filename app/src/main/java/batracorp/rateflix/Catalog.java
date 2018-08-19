@@ -1,19 +1,50 @@
 package batracorp.rateflix;
 
 /**
- * Created by Lupe on 6/2/2017.
+ * Created by Batra on 6/2/2017.
  */
 
 public class Catalog {
 
     private Movie[] movies;
     private int quantity;
+    private int cursor;
 
     public Catalog(){
         movies=new Movie[10];
         quantity=0;
+        cursor=0;
     }
 
+    /**
+     *
+     * @return the Movie pointer by the cursor
+     */
+    public Movie getMovie(){
+        if (quantity>0) {
+            return movies[cursor];
+        }
+        else
+            return null;
+    }
+
+    /**
+     * Points the cursor of the catalog to its next available item
+     */
+    public void next(){
+        cursor++;
+        if(cursor==quantity){
+            cursor=0;
+        }
+
+    }
+
+    /**
+     *
+     * @param Title of the movie
+     * @param Description  of the movie
+     * @param Picture descripting the movie
+     */
     public void addMovie(String Title, String Description, String Picture){
 
         Movie movie =new Movie(Title,Description,Picture);
@@ -25,6 +56,10 @@ public class Catalog {
         quantity++;
     }
 
+    /**
+     *
+     * @param movie to be removed. If not found, nothing occurs.
+     */
     public void removeMovie(Movie movie){
         int i=0;
         boolean encontro=false;

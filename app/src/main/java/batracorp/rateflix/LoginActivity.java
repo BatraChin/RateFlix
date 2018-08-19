@@ -30,7 +30,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-   // private SharedPreferences editor = new SharedPreferences();
+
 
 
 
@@ -54,6 +59,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    protected SharedPreferences sharedPreferences ;
+
+
 
 
     @Override
@@ -61,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //SharedPreferences settings = getApplicationContext().getSharedPreferences(Catalogo, MODE_PRIVATE   );
+        sharedPreferences= getSharedPreferences("datos login",MODE_PRIVATE);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -73,8 +81,25 @@ public class LoginActivity extends AppCompatActivity {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+
+
+                String user = ((AutoCompleteTextView) findViewById(R.id.email)).getText().toString();
+                String pass = ((EditText) findViewById(R.id.password)).getText().toString();
+                ((AutoCompleteTextView) findViewById(R.id.email)).setText("");
+                ((EditText) findViewById(R.id.password)).setText("");
+
+
+                if (pass.length()<4){
+                    Toast.makeText(LoginActivity.this, "La contrasena es muy corta.", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+                    if (Login(user, pass)){
+                        //Si el login es exitoso, cambia de actividad.
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
             }
         });
 
@@ -83,15 +108,67 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private void loadData(){
+       /* SharedPreferences sharedPreferences = getSharedPreferences("datos login", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("key",null);
+        Type type = new TypeToken<User>() {}.getType();
+        userObject = gson.fromJson(json,type);*/
+    }
 
 
+    private boolean Login(String user, String pass){
 
-    public void Login(){
-     /*   String user= mEmailView.getText();
-        String password= mPasswordView.getText();
-*/
-       // if ()
 
+        if(userExists(user)){
+           // Toast.makeText(LoginActivity.this, "El usuario existe.", Toast.LENGTH_SHORT).show();
+            if(validPass(user, pass))
+                    return true;
+            else{
+                Toast.makeText(LoginActivity.this, "Contrasena incorrecta.", Toast.LENGTH_SHORT).show();
+
+                return false;
+
+            }
+
+        }
+        else{
+            Toast.makeText(LoginActivity.this, "El usuario no existe pero fue creado. Vuelva a intentarlo.", Toast.LENGTH_SHORT).show();
+
+            register(user,pass);
+            return false;
+        }
+    }
+    private boolean userExists(String user){
+
+
+        String json = sharedPreferences.getString(user,null);
+        if (json == null) {
+            return false;
+
+        }
+        else {
+            return true;
+        }
+    }
+    private boolean validPass(String user, String pass){
+
+        String json = sharedPreferences.getString(user,null);
+
+        
+        if (json.equals(pass))
+            return false;
+        else
+            return true;
+
+    }
+    private void register(String user, String pwd){
+
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(user,pwd);
+        editor.apply();
     }
 
 
