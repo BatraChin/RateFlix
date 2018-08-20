@@ -47,13 +47,6 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity {
 
 
-
-
-
-
-
-
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -108,13 +101,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void loadData(){
-       /* SharedPreferences sharedPreferences = getSharedPreferences("datos login", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("key",null);
-        Type type = new TypeToken<User>() {}.getType();
-        userObject = gson.fromJson(json,type);*/
-    }
+
 
 
     private boolean Login(String user, String pass){
@@ -155,11 +142,11 @@ public class LoginActivity extends AppCompatActivity {
 
         String json = sharedPreferences.getString(user,null);
 
-        
+
         if (json.equals(pass))
-            return false;
-        else
             return true;
+        else
+            return false;
 
     }
     private void register(String user, String pwd){

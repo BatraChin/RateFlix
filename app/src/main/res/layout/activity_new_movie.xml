@@ -7,7 +7,7 @@
     tools:context="batracorp.rateflix.NewMovieActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/titleBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/descriptionBox"
         android:layout_width="261dp"
         android:layout_height="81dp"
         android:layout_marginBottom="8dp"
@@ -32,15 +32,15 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Description"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton"
+        app:layout_constraintBottom_toTopOf="@+id/imageBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/titleBox"
         app:layout_constraintVertical_bias="0.56" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <ImageView
+        android:id="@+id/imageBox"
         android:layout_width="220dp"
         android:layout_height="189dp"
         android:layout_marginBottom="28dp"

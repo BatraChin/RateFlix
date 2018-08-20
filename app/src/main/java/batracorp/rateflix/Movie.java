@@ -11,9 +11,9 @@ public class Movie {
     private String picture;
 
 
-    private Comment[]   comments ;
+    /*private Comment[]   comments ;
     private int quantityComments;
-    private float punctuation;
+    private float punctuation;*/
 
 
     public Movie(String name,String description,String picture){
@@ -22,8 +22,8 @@ public class Movie {
         this.picture=picture;
 
 
-        comments= new Comment[10];
-        quantityComments=0;
+        /*comments= new Comment[10];
+        quantityComments=0;*/
     }
 
     public String getTitle(){
@@ -32,10 +32,13 @@ public class Movie {
     public String getDescription(){
         return description;
     }
+    public String getPicture(){
+        return picture;
+    }
 
 
 
-    public void addComment(Comment c){
+   /* public void addComment(Comment c){
         comments[quantityComments]=c;
         quantityComments++;
     }
@@ -46,6 +49,6 @@ public class Movie {
             average+=comments[i].getPunctuation();
         average/=quantityComments;
         punctuation=average;
-    }
+    }*/
 
 }
