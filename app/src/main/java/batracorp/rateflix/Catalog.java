@@ -1,19 +1,33 @@
 package batracorp.rateflix;
 
+import android.util.Log;
+
 /**
  * Created by Batra on 6/2/2017.
  */
 
 public class Catalog {
 
+    private static Catalog instance=null;
     private Movie[] movies;
     private int quantity;
     private int cursor;
 
-    public Catalog(){
+    private Catalog(){
         movies=new Movie[10];
         quantity=0;
         cursor=0;
+    }
+    public static Catalog getInstance(){
+
+        if (instance ==null){
+
+            instance = new Catalog();
+
+
+        }
+        return instance;
+
     }
 
     /**
@@ -48,11 +62,13 @@ public class Catalog {
     public void addMovie(String Title, String Description, String Picture){
 
         Movie movie =new Movie(Title,Description,Picture);
+
         if (quantity > movies.length) {
             duplicar();
         }
 
         movies[quantity]=movie;
+
         quantity++;
     }
 
@@ -88,5 +104,19 @@ public class Catalog {
         for (i=pos;i<quantity-1;i++)
             movies[i]=movies[i+1];
         movies[i+1]=null;
+    }
+
+    public String toString(){
+        String retorno = "";
+        for(int i=0;i<quantity;i++){
+            retorno+= "Titulo: "+movies[i].getTitle()+"\n";
+            retorno+= "Descripcion: "+movies[i].getDescription()+"\n";
+            retorno+= "Imagen: "+movies[i].getPicture()+"\n\n\n";
+        }
+        return retorno;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }
