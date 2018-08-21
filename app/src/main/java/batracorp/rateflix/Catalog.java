@@ -105,4 +105,18 @@ public class Catalog {
             movies[i]=movies[i+1];
         movies[i+1]=null;
     }
+
+    public String toString(){
+        String retorno = "";
+        for(int i=0;i<quantity;i++){
+            retorno+= "Titulo: "+movies[i].getTitle()+"\n";
+            retorno+= "Descripcion: "+movies[i].getDescription()+"\n";
+            retorno+= "Imagen: "+movies[i].getPicture()+"\n\n\n";
+        }
+        return retorno;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }
