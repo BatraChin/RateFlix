@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by Batra on 6/2/2017.
  */
 
-public class Catalog {
+public  class Catalog {
 
     private static Catalog instance=null;
     private Movie[] movies;
@@ -45,11 +45,15 @@ public class Catalog {
     /**
      * Points the cursor of the catalog to its next available item
      */
-    public void next(){
-        cursor++;
+    public boolean next(){
+        if(cursor==quantity){
+            return false;
+        }
+            cursor++;
         if(cursor==quantity){
             cursor=0;
         }
+        return true;
 
     }
 

@@ -19,11 +19,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 public class NewMovieActivity extends AppCompatActivity {
 
@@ -51,13 +53,15 @@ public class NewMovieActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                SharedPreferences Catalogo = getApplicationContext().getSharedPreferences("Catalogo", MODE_PRIVATE   );
-                SharedPreferences.Editor editor = Catalogo.edit();
+               // SharedPreferences Catalogo = getApplicationContext().getSharedPreferences("Catalogo", MODE_PRIVATE   );
+                //SharedPreferences.Editor editor = Catalogo.edit();
                 Title = ((EditText)findViewById(R.id.titleBox)).getText().toString();
                 Description = ((EditText) findViewById(R.id.descriptionBox)).getText().toString();
                 if (!validInput())
                     Toast.makeText(NewMovieActivity.this, "Debes completar todos los campos.", Toast.LENGTH_SHORT).show();
                 else {
+                    if(existsData())
+                        loadData();
                     saveMovie();
 
 
@@ -74,12 +78,25 @@ public class NewMovieActivity extends AppCompatActivity {
 
                 openGallery();
 
-              //  Intent intent = new Intent(NewMovieActivity.this, MainActivity.class);
-               // startActivity(intent);
-
 
             }
         });
+    }
+    private boolean existsData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas",MODE_PRIVATE);
+        String json = sharedPreferences.getString("Catalogo", null);
+        return json!=null;
+
+    }
+    private void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas", MODE_PRIVATE);
+        Gson gson = new Gson();
+
+        String json = sharedPreferences.getString("Catalogo", null);
+        Type type = new TypeToken<Catalog>() {
+        }.getType();
+
+        catalog = gson.fromJson(json, type);
     }
     private boolean    validInput(){
         if((imageUri!= null) && (Title.length()>0) && (Description.length()>10))
@@ -90,9 +107,6 @@ public class NewMovieActivity extends AppCompatActivity {
     }
     private void    openGallery(){
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-       // gallery.addCategory(Intent.CATEGORY_OPENABLE);
-      //  gallery.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-       // gallery.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(gallery,PICK_IMAGE);
 
     }
@@ -106,7 +120,9 @@ public class NewMovieActivity extends AppCompatActivity {
     }
 
     private void saveMovie(){
-        catalog=catalog.getInstance();
+
+
+
         Bitmap bitmap=null;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
@@ -114,7 +130,6 @@ public class NewMovieActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //String Pictures = imageUri.toString();
         String Pictures = saveToInternalStorage(bitmap);
 
 
@@ -127,43 +142,38 @@ public class NewMovieActivity extends AppCompatActivity {
         String json = gson.toJson(catalog);
         editor.putString("Catalogo",json);
 
-
         editor.apply();
+
     }
 
 
-    private String saveToInternalStorage(Bitmap finalBitmap) {
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/saved_images");
-        myDir.mkdirs();
-        String fname = Title;
-        File file = new File (myDir, fname);
-        Log.d("saveToInternalStorage",file.getName()+"este es el nombre del archivo \n\n");
+    /**
+     *
+     * @param bitmapImage to store
+     * @return returns the String URL for the image given by param
+     */
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory, Title);
 
-        String retorno =file.getAbsolutePath();
-        if (file.exists ()) file.delete ();
+        FileOutputStream fos = null;
         try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
-            out.flush();
-            out.close();
-
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 50, fos);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        Log.d("saveToInternalStorage","Guarde los datos en la memoria interna supuestamente \n\n\n");
-        return retorno;
-    }
-
-    private String encodeTobase64(Bitmap image) {
-        Bitmap immage = image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immage.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Log.d("Image Log:", imageEncoded);
-        return imageEncoded;
+        return directory.getAbsolutePath()+"/"+Title;
     }
 
 }

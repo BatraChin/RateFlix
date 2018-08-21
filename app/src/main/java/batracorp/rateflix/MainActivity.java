@@ -36,17 +36,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        catalog = catalog.getInstance();
-        if (catalog.getQuantity() > 0) {
+        if(existsData()){
+            catalog=catalog.getInstance();
             loadData();
             showMovie();
         }
-        Log.d("IMPRIMIR TOOD: \n\n", catalog.toString());
+        else{
+
+        }
 
 
         findViewById(R.id.AddMovieButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(MainActivity.this, NewMovieActivity.class);
                 startActivity(intent);
             }
@@ -56,13 +59,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                catalog.next();
+                if(catalog.next());
                 showMovie();
             }
         });
 
     }
+    private boolean existsData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas",MODE_PRIVATE);
+        String json = sharedPreferences.getString("Catalogo", null);
+        return json!=null;
 
+    }
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas", MODE_PRIVATE);
         Gson gson = new Gson();
@@ -81,24 +89,14 @@ public class MainActivity extends AppCompatActivity {
         description = ((TextView) findViewById(R.id.MovieDescription));
         description.setText(currentMovie.getDescription());
         loadImageFromStorage(currentMovie.getPicture());
-        /*MovieImageView = (ImageView)findViewById(R.id.MovieImageView);
-       // imageUri =Uri.parse(currentMovie.getPicture()) ;
-       // MovieImageView.setImageURI(imageUri);
-        MovieImageView.setImageBitmap(decodeBase64(catalog.getMovie().getPicture()));
-        MovieImageView.setScaleType(ImageView.ScaleType.FIT_XY);*/
 
     }
 
-    private Bitmap decodeBase64(String input) {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
 
     private void loadImageFromStorage(String path) {
 
         try {
 
-            Log.d("LoadImageFromStorage:\n",path);
             File f = new File(path);
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             ImageView img = (ImageView) findViewById(R.id.MovieImageView);
