@@ -9,17 +9,18 @@ public class Movie {
     private String name;
     private String description;
     private String picture;
+    private float Rating;
 
 
     /*private Comment[]   comments ;
-    private int quantityComments;
-    private float punctuation;*/
+    private int quantityComments;*/
 
 
-    public Movie(String name,String description,String picture){
+    public Movie(String name,String description,float Rating,String picture){
         this.name=name;
         this.description=description;
         this.picture=picture;
+        this.Rating=Rating;
 
 
         /*comments= new Comment[10];
@@ -35,20 +36,22 @@ public class Movie {
     public String getPicture(){
         return picture;
     }
-
-
+    public float  getRating(){return Rating;}
+    public String toString(){
+        return getTitle()+"\n"+getDescription()+"\n" +getPicture()+"\n"+getRating();
+    }
 
    /* public void addComment(Comment c){
         comments[quantityComments]=c;
         quantityComments++;
     }
 
-    public void calculatePunctuation(){
+    public void calculateRating(){
         float average=0;
         for(int i=0;i<quantityComments;i++)
-            average+=comments[i].getPunctuation();
+            average+=comments[i].getRating();
         average/=quantityComments;
-        punctuation=average;
+        Rating=average;
     }*/
 
 }

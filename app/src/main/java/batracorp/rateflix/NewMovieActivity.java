@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -35,6 +36,7 @@ public class NewMovieActivity extends AppCompatActivity {
     private ImageView imageView;
     private String Title;
     private String Description;
+    private float Rating;
     private SharedPreferences sharedPreferences;
     private Catalog catalog;
 
@@ -57,6 +59,8 @@ public class NewMovieActivity extends AppCompatActivity {
                 //SharedPreferences.Editor editor = Catalogo.edit();
                 Title = ((EditText)findViewById(R.id.titleBox)).getText().toString();
                 Description = ((EditText) findViewById(R.id.descriptionBox)).getText().toString();
+                Rating = ((RatingBar)findViewById(R.id.ratingBar)).getRating();
+                catalog = catalog.getInstance();
                 if (!validInput())
                     Toast.makeText(NewMovieActivity.this, "Debes completar todos los campos.", Toast.LENGTH_SHORT).show();
                 else {
@@ -133,7 +137,7 @@ public class NewMovieActivity extends AppCompatActivity {
         String Pictures = saveToInternalStorage(bitmap);
 
 
-        catalog.addMovie(Title,Description,Pictures);
+        catalog.addMovie(Title,Description,Rating,Pictures);
 
 
         sharedPreferences = getSharedPreferences("Catalogo peliculas",MODE_PRIVATE);

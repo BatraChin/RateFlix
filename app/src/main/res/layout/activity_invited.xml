@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#222222"
-    tools:context="batracorp.rateflix.MainActivity">
+    tools:context="batracorp.rateflix.InvitedActivity">
 
     <ImageView
         android:id="@+id/MovieImageView"
@@ -14,27 +13,23 @@
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:background="#222222"
         app:layout_constraintTop_toBottomOf="@+id/MovieTitle"
         app:srcCompat="@mipmap/ic_launcher"
-        tools:layout_editor_absoluteX="1dp"
-        tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteX="1dp" />
 
     <TextView
         android:id="@+id/MovieTitle"
-        android:layout_width="217dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:textColor="#D81F26"
-        android:background="#222222"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,8 +42,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
-        android:textColor="#D81F26"
-        android:background="#222222"
         app:layout_constraintBottom_toTopOf="@+id/NextButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.509"
@@ -63,7 +56,6 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="28dp"
         android:text="Next"
-        android:background="#222222"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -74,47 +66,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="28dp"
         android:text="Previous"
-        android:background="#222222"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/AddMovieButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:background="#222222"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/NextButton"
-        app:layout_constraintHorizontal_bias="0.548"
-        app:layout_constraintStart_toEndOf="@+id/PreviousButton"
-        app:layout_constraintTop_toBottomOf="@+id/MovieDescription"
-        app:layout_constraintVertical_bias="0.333"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:focusable="true" />
-
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="239dp"
-        android:layout_height="42dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:isIndicator="true"
-        android:numStars="5"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        android:stepSize="1"
-        android:visibility="visible"
-        android:background="#222222"
-        app:layout_constraintBottom_toTopOf="@+id/MovieImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toEndOf="@+id/MovieTitle"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
 </android.support.constraint.ConstraintLayout>

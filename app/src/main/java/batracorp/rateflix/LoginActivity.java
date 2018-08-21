@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -87,9 +88,15 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
                 else {
-                    if (Login(user, pass)){
-                        //Si el login es exitoso, cambia de actividad.
+                    if (user.equals("admin") && pass.equals("admin")){
+                        Log.d("entra como admin","IMPRIMIR SI ENTRO COMO ADMIN");
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                    else if (Login(user, pass)){
+                        Log.d("entra como user","IMPRIMIR SI ENTRO COMO INVITADO");
+                        //Si el login es exitoso, cambia de actividad.
+                        Intent intent = new Intent(LoginActivity.this, InvitedActivity.class);
                         startActivity(intent);
                     }
                 }

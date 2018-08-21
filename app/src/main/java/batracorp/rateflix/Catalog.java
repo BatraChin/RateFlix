@@ -13,6 +13,7 @@ public  class Catalog {
     private int quantity;
     private int cursor;
 
+
     private Catalog(){
         movies=new Movie[10];
         quantity=0;
@@ -63,9 +64,9 @@ public  class Catalog {
      * @param Description  of the movie
      * @param Picture descripting the movie
      */
-    public void addMovie(String Title, String Description, String Picture){
+    public void addMovie(String Title, String Description,float Rating, String Picture){
 
-        Movie movie =new Movie(Title,Description,Picture);
+        Movie movie =new Movie(Title,Description,Rating,Picture);
 
         if (quantity > movies.length) {
             duplicar();
