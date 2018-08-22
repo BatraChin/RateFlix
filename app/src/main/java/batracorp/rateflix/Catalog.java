@@ -50,9 +50,23 @@ public  class Catalog {
         if(cursor==quantity){
             return false;
         }
-            cursor++;
+        cursor++;
         if(cursor==quantity){
             cursor=0;
+        }
+        return true;
+
+    }
+    /**
+     * Points the cursor of the catalog to its previous available item
+     */
+    public boolean previous(){
+        if(cursor==quantity){
+            return false;
+        }
+        cursor--;
+        if(cursor==-1){
+            cursor=quantity-1;
         }
         return true;
 
@@ -81,19 +95,21 @@ public  class Catalog {
      *
      * @param movie to be removed. If not found, nothing occurs.
      */
-    public void removeMovie(Movie movie){
-        int i=0;
-        boolean encontro=false;
-        while (i<quantity && !encontro) {
-            if (movies[i].equals(movie)) {
-                encontro = true;
-                i--;
+    public void removeMovie(){
+        if(quantity>0) {
+            Movie movie = movies[cursor];
+            int i = 0;
+            boolean encontro = false;
+            while (i < quantity && !encontro) {
+                if (movies[i].equals(movie)) {
+                    encontro = true;
+                    i--;
+                }
+                i++;
             }
-            i++;
+            if (encontro)
+                comprimir(i);
         }
-        if (encontro)
-            comprimir(i);
-
     }
     private void duplicar(){
         Movie[] aux =  new Movie[quantity * 2];

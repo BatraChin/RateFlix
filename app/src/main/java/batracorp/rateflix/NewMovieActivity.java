@@ -30,7 +30,6 @@ import java.lang.reflect.Type;
 
 public class NewMovieActivity extends AppCompatActivity {
 
-
     private static final int PICK_IMAGE=100;
     private Uri imageUri;
     private ImageView imageView;
@@ -45,10 +44,8 @@ public class NewMovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_movie);
 
-
         Button mCreateButton = (Button) findViewById(R.id.CreateButton);
          imageView = (ImageView) findViewById(R.id.imageBox);
-
 
 
         mCreateButton.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +65,6 @@ public class NewMovieActivity extends AppCompatActivity {
                         loadData();
                     saveMovie();
 
-
                     Intent intent = new Intent(NewMovieActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -81,39 +77,41 @@ public class NewMovieActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 openGallery();
-
-
             }
         });
     }
     private boolean existsData(){
+
         SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas",MODE_PRIVATE);
         String json = sharedPreferences.getString("Catalogo", null);
         return json!=null;
 
     }
+
     private void loadData() {
+
         SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas", MODE_PRIVATE);
         Gson gson = new Gson();
-
         String json = sharedPreferences.getString("Catalogo", null);
         Type type = new TypeToken<Catalog>() {
         }.getType();
-
         catalog = gson.fromJson(json, type);
     }
+
     private boolean    validInput(){
+
         if((imageUri!= null) && (Title.length()>0) && (Description.length()>10))
             return true;
         else
             return false;
-
     }
+
     private void    openGallery(){
+
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery,PICK_IMAGE);
-
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
@@ -125,31 +123,22 @@ public class NewMovieActivity extends AppCompatActivity {
 
     private void saveMovie(){
 
-
-
         Bitmap bitmap=null;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         String Pictures = saveToInternalStorage(bitmap);
-
-
         catalog.addMovie(Title,Description,Rating,Pictures);
-
 
         sharedPreferences = getSharedPreferences("Catalogo peliculas",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(catalog);
         editor.putString("Catalogo",json);
-
         editor.apply();
-
     }
-
 
     /**
      *
@@ -157,13 +146,14 @@ public class NewMovieActivity extends AppCompatActivity {
      * @return returns the String URL for the image given by param
      */
     private String saveToInternalStorage(Bitmap bitmapImage) {
+
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
         File mypath = new File(directory, Title);
-
         FileOutputStream fos = null;
+
         try {
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream

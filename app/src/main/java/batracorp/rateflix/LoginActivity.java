@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -46,8 +47,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
-
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -56,19 +55,15 @@ public class LoginActivity extends AppCompatActivity {
     protected SharedPreferences sharedPreferences ;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         sharedPreferences= getSharedPreferences("datos login",MODE_PRIVATE);
-
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
-
 
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -76,25 +71,20 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
                 String user = ((AutoCompleteTextView) findViewById(R.id.email)).getText().toString();
                 String pass = ((EditText) findViewById(R.id.password)).getText().toString();
                 ((AutoCompleteTextView) findViewById(R.id.email)).setText("");
                 ((EditText) findViewById(R.id.password)).setText("");
 
-
                 if (pass.length()<4){
                     Toast.makeText(LoginActivity.this, "La contrasena es muy corta.", Toast.LENGTH_SHORT).show();
-
                 }
                 else {
                     if (user.equals("admin") && pass.equals("admin")){
-                        Log.d("entra como admin","IMPRIMIR SI ENTRO COMO ADMIN");
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                     else if (Login(user, pass)){
-                        Log.d("entra como user","IMPRIMIR SI ENTRO COMO INVITADO");
                         //Si el login es exitoso, cambia de actividad.
                         Intent intent = new Intent(LoginActivity.this, InvitedActivity.class);
                         startActivity(intent);
@@ -102,17 +92,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
         mLoginFormView = findViewById(R.id.login_form);
-
     }
 
-
-
-
-
     private boolean Login(String user, String pass){
-
 
         if(userExists(user)){
            // Toast.makeText(LoginActivity.this, "El usuario existe.", Toast.LENGTH_SHORT).show();
@@ -120,26 +103,21 @@ public class LoginActivity extends AppCompatActivity {
                     return true;
             else{
                 Toast.makeText(LoginActivity.this, "Contrasena incorrecta.", Toast.LENGTH_SHORT).show();
-
                 return false;
-
             }
-
         }
         else{
             Toast.makeText(LoginActivity.this, "El usuario no existe pero fue creado. Vuelva a intentarlo.", Toast.LENGTH_SHORT).show();
-
             register(user,pass);
             return false;
         }
     }
-    private boolean userExists(String user){
 
+    private boolean userExists(String user){
 
         String json = sharedPreferences.getString(user,null);
         if (json == null) {
             return false;
-
         }
         else {
             return true;
@@ -148,24 +126,19 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validPass(String user, String pass){
 
         String json = sharedPreferences.getString(user,null);
-
-
         if (json.equals(pass))
             return true;
         else
             return false;
 
     }
+
     private void register(String user, String pwd){
 
-
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
         editor.putString(user,pwd);
         editor.apply();
     }
-
-
 
 }
 

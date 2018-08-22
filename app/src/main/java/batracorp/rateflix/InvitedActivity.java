@@ -1,10 +1,12 @@
 package batracorp.rateflix;
 
+import android.app.ActionBar;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -29,6 +32,7 @@ public class InvitedActivity extends AppCompatActivity {
 
     private Catalog catalog;
     private TextView title, description;
+    private RatingBar   rating;
     private Uri imageUri;
     private ImageView MovieImageView;
 
@@ -36,16 +40,21 @@ public class InvitedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invited);
+        catalog=catalog.getInstance();
+
         if(existsData()){
-            catalog=catalog.getInstance();
             loadData();
             showMovie();
+            MovieImageView= findViewById(R.id.MovieImageView);
         }
         else{
             title =findViewById(R.id.MovieTitle);
             title.setText("NO HAY PELICULAS EN EL CATALOGO");
             description= findViewById(R.id.MovieDescription);
             description.setText("Los administradores aun no han cargado peliculas. Debe esperar a que las mismas sean cargadas.");
+
+            MovieImageView= findViewById(R.id.MovieImageView);
+            MovieImageView.setVisibility(View.INVISIBLE);
 
         }
 
@@ -55,8 +64,18 @@ public class InvitedActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(catalog.next());
-                showMovie();
+                if(catalog.next()) {
+                    showMovie();
+                }
+            }
+        });
+        findViewById(R.id.PreviousButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(catalog.previous()) {
+                    showMovie();
+                }
             }
         });
 
@@ -84,7 +103,14 @@ public class InvitedActivity extends AppCompatActivity {
         title.setText(currentMovie.getTitle());
         description = ((TextView) findViewById(R.id.MovieDescription));
         description.setText(currentMovie.getDescription());
+
+        rating =(RatingBar) findViewById(R.id.ratingBar);
+        rating.setRating(currentMovie.getRating());
         loadImageFromStorage(currentMovie.getPicture());
+
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/netflixfont.ttf");
+        title.setTypeface(custom_font);
+        description.setTypeface(custom_font);
 
     }
 

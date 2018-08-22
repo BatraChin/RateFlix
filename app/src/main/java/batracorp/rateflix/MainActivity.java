@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,15 +40,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        catalog=catalog.getInstance();
         if(existsData()){
-            catalog=catalog.getInstance();
             loadData();
             showMovie();
         }
-        else{
-
-        }
-
 
         findViewById(R.id.AddMovieButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,32 +59,50 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(catalog.next());
-                showMovie();
+                if(catalog.next()) {
+                    showMovie();
+                }
+            }
+        });
+        findViewById(R.id.PreviousButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(catalog.previous()) {
+                    showMovie();
+                }
+            }
+        });
+
+        findViewById(R.id.RemoveButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                remove();
             }
         });
 
     }
     private boolean existsData(){
+
         SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas",MODE_PRIVATE);
         String json = sharedPreferences.getString("Catalogo", null);
         return json!=null;
 
     }
     private void loadData() {
+
         SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas", MODE_PRIVATE);
         Gson gson = new Gson();
-
         String json = sharedPreferences.getString("Catalogo", null);
         Type type = new TypeToken<Catalog>() {
         }.getType();
-
         catalog = gson.fromJson(json, type);
     }
 
     private void showMovie() {
+
         Movie currentMovie = catalog.getMovie();
-        Log.d("La peli es:",currentMovie.toString());
         title = ((TextView) findViewById(R.id.MovieTitle));
         title.setText(currentMovie.getTitle());
         description = ((TextView) findViewById(R.id.MovieDescription));
@@ -95,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
         rating =(RatingBar) findViewById(R.id.ratingBar);
         rating.setRating(currentMovie.getRating());
         loadImageFromStorage(currentMovie.getPicture());
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/netflixfont.ttf");
 
-        title.setTypeface(custom_font);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/netflixfont.ttf");
+        title.setTypeface(custom_font);                     //ESTABLEZCO EL TIPO DE LETRA DE NETFLIX PARA LOS TEXTOS
         description.setTypeface(custom_font);
 
     }
@@ -106,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadImageFromStorage(String path) {
 
         try {
-
             File f = new File(path);
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             ImageView img = (ImageView) findViewById(R.id.MovieImageView);
@@ -114,6 +128,20 @@ public class MainActivity extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
 
+    private void remove(){
+        /*SharedPreferences sharedPreferences=getSharedPreferences("Catalago peliculas", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(catalog.getMovie().getTitle());
+        editor.apply();*/
+        catalog.removeMovie();
+        SharedPreferences sharedPreferences = getSharedPreferences("Catalogo peliculas",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(catalog);
+        editor.putString("Catalogo",json);
+        editor.apply();
+        showMovie();
     }
 }
